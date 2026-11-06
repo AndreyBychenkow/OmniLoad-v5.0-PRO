@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "OmniLoad — Скачивание видео и MP3 (YouTube, ВК, TikTok)",
+  "version": "3.5.0",
+  "description": "Скачивание любых видео (YouTube, VK Видео, TikTok, Instagram, Rutube) в MP4 (1080p/720p/480p) и аудио MP3 в 1 клик.",
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "OmniLoad — Скачать видео или MP3",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.vkvideo.ru/*",
+        "*://*.vk.com/*",
+        "*://*.vk.ru/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

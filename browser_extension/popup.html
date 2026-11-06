@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>OmniLoad v5.0 PRO</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 425px;
+      padding: 18px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .title { font-size: 15.5px; font-weight: 800; }
+    .sub { font-size: 11px; color: #94a3b8; }
+    .btn-pro-top {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border: none;
+      padding: 6px 11px;
+      border-radius: 99px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-pro-top.active {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #34d399;
+    }
+    .input-wrap {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    input {
+      flex: 1;
+      height: 42px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,0.16);
+      background: #090d16;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    input:focus { border-color: #10b981; }
+    .btn-paste {
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(99,102,241,0.45);
+      background: rgba(99,102,241,0.2);
+      color: #e2e8f0;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .q-row {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+    .q-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border-radius: 9px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #1e293b;
+      color: #cbd5e1;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .q-btn.active {
+      background: #6366f1;
+      border-color: #818cf8;
+      color: #fff;
+    }
+    .btn-download {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      font-size: 14.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+    }
+    .btn-download:disabled { opacity: 0.65; cursor: wait; }
+
+    /* PRO Activation Box */
+    .pro-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 11px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .pro-box.show { display: block; }
+    .pro-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #fbbf24;
+      margin-bottom: 6px;
+    }
+    .pro-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn-activate {
+      background: #10b981;
+      color: #fff;
+      border: none;
+      padding: 0 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Progress Box */
+    .progress-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 11px;
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+    .progress-box.show { display: block; }
+    .p-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .p-sub {
+      font-size: 11.5px;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .p-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .p-fill {
+      height: 100%;
+      background: #10b981;
+      width: 0%;
+      transition: width 0.25s;
+    }
+    .ctrl-row {
+      display: none;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .ctrl-row.show { display: flex; }
+    .btn-ctrl {
+      flex: 1;
+      height: 34px;
+      border-radius: 8px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-pause { background: #f59e0b; }
+    .btn-pause.resuming { background: #10b981; }
+    .btn-cancel { background: #ef4444; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">⚡</div>
+      <div>
+        <div class="title">OmniLoad v5.0</div>
+        <div class="sub">Связь с программой активна ✓</div>
+      </div>
+    </div>
+    <button type="button" id="proTopBtn" class="btn-pro-top">👑 PRO</button>
+  </div>
+
+  <div class="input-wrap">
+    <input type="text" id="urlInput" placeholder="Вставьте любую ссылку на видео..." autofocus />
+    <button id="pasteBtn" class="btn-paste" title="Вставить из буфера">📋 Вставить</button>
+  </div>
+
+  <div class="q-row" id="qRow">
+    <button type="button" class="q-btn" data-mode="best_mp4" data-pro="1">🔒 Лучшее</button>
+    <button type="button" class="q-btn" data-mode="1080p" data-pro="1">🔒 1080p</button>
+    <button type="button" class="q-btn" data-mode="720p" data-pro="1">🔒 720p</button>
+    <button type="button" class="q-btn" data-mode="480p" data-pro="1">🔒 480p</button>
+    <button type="button" class="q-btn active" data-mode="360p" data-pro="0">📹 360p (24ч)</button>
+    <button type="button" class="q-btn" data-mode="audio_mp3" data-pro="1">🔒 MP3</button>
+  </div>
+
+  <button id="downloadBtn" class="btn-download">⬇️ Скачать видео (360p — Бесплатно 24ч)</button>
+
+  <div id="proBox" class="pro-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <div class="pro-title" style="margin-bottom:0;">👑 PRO открывает 480p, 720p, 1080p, 4K и MP3</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;padding:6px 8px;border-radius:7px;margin-bottom:7px;border:1px solid rgba(56,189,248,0.25);">
+      <span style="font-size:11.5px;color:#38bdf8;font-weight:700;">💻 Код вашего ПК: <span id="hwidSpan" style="font-family:monospace;color:#fff;">----</span></span>
+      <button type="button" id="copyHwidBtn" style="background:#334155;color:#fff;border:none;border-radius:5px;padding:3px 7px;font-size:10.5px;font-weight:700;cursor:pointer;">📋 Копировать ID</button>
+    </div>
+    <div id="tariffGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:7px;text-align:center;">
+      <div class="t-card" data-tcode="M" data-tname="На 1 месяц (150 ₽)" data-tprice="150 ₽" style="background:#0f172a;padding:6px 4px;border-radius:7px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;">
+        <div class="t-title" style="font-size:10.5px;color:#cbd5e1;font-weight:700;">🟢 1 месяц</div>
+        <div style="font-size:13px;color:#10b981;font-weight:800;">150 ₽</div>
+      </div>
+      <div class="t-card active" data-tcode="H" data-tname="На Полгода (490 ₽)" data-tprice="490 ₽" style="background:#312e81;padding:6px 4px;border-radius:7px;border:1px solid #818cf8;cursor:pointer;">
+        <div class="t-title" style="font-size:10.5px;color:#fbbf24;font-weight:800;">🔥 Полгода</div>
+        <div style="font-size:13px;color:#10b981;font-weight:800;">490 ₽</div>
+      </div>
+      <div class="t-card" data-tcode="L" data-tname="Навсегда (990 ₽)" data-tprice="990 ₽" style="background:#0f172a;padding:6px 4px;border-radius:7px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;">
+        <div class="t-title" style="font-size:10.5px;color:#cbd5e1;font-weight:700;">👑 Навсегда</div>
+        <div style="font-size:13px;color:#10b981;font-weight:800;">990 ₽</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;padding:6px 8px;border-radius:7px;margin-bottom:7px;border:1px solid rgba(251,191,36,0.28);font-size:11px;color:#fde68a;">
+      <span>💳 Карта Альфа-Банк: <b id="cardNumberSpan" style="color:#fff;">2200 1502 9743 8522</b> (Андрей Владимирович Б.)</span>
+      <button type="button" id="copyCardBtn" style="background:#334155;color:#fff;border:none;border-radius:5px;padding:3px 7px;font-size:10.5px;font-weight:700;cursor:pointer;">📋 Карта</button>
+    </div>
+    <div style="display:flex;gap:5px;margin-bottom:8px;">
+      <a id="buyProLink" href="https://t.me/OmniLoad_Vip2026_bot" target="_blank" style="flex:1;display:block;text-align:center;background:#6366f1;color:#fff;text-decoration:none;font-weight:700;font-size:11.5px;padding:7px 4px;border-radius:8px;">🤖 Оплатить: Полгода (490 ₽)</a>
+      <a id="directSellerLink" href="https://t.me/decebell032" target="_blank" style="display:block;text-align:center;background:#0ea5e9;color:#fff;text-decoration:none;font-weight:700;font-size:11.5px;padding:7px 8px;border-radius:8px;">💬 @decebell032</a>
+    </div>
+    <div style="font-size:11.5px; color:#fde68a;">Введите персональный ключ для вашего ПК:</div>
+    <div class="pro-row">
+      <input type="text" id="proKeyInput" placeholder="OMNI-XXXXX-XXXXX-XXXXX-XXXXX" maxlength="29" style="height:36px;font-family:monospace;" />
+      <button type="button" id="activateBtn" class="btn-activate">Активировать</button>
+    </div>
+    <div id="proMsg" style="font-size:11.5px;margin-top:6px;color:#cbd5e1;"></div>
+  </div>
+
+  <div id="progressBox" class="progress-box">
+    <div id="pTitle" class="p-title">Загрузка...</div>
+    <div class="p-sub">
+      <span id="pStage">Подготовка...</span>
+      <span id="pPct">0%</span>
+    </div>
+    <div class="p-track">
+      <div id="pFill" class="p-fill"></div>
+    </div>
+    <div id="ctrlRow" class="ctrl-row">
+      <button type="button" id="pauseBtn" class="btn-ctrl btn-pause">⏸️ Пауза</button>
+      <button type="button" id="cancelBtn" class="btn-ctrl btn-cancel">⏹️ Отменить</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
